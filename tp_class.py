@@ -134,25 +134,72 @@ class Student:
             raise ValueError("La note doit être comprise entre 0 et 20")
         self.grades[course].append(grade)                  #si course n'existe pas, il le crée dans dico
 
+    def followed_topics(self) : 
+        return self.grades.keys()
+
+    def compute_average(self, course: str) : 
+        if not(course in self.followed_topics()) : 
+            raise ValueError("Il n'y a aucune note dans cette matière")
+        return (sum(self.grades[course]) / len(self.grades[course]))
+
         
+# pour tester
+
+# try:
+#     student = Student("Achille", "Talon")
+#     student.add_grade("History", 10.)
+#     student.add_grade("History", 12.)
+#     try:
+#         student.add_grade("History", 25.)
+#     except ValueError:
+#         pass
+#     else:
+#         raise Exception("a grade outside of [0, 20] should raise ValueError")
+# except Exception as e:
+#     print('OOPS - There is an issue in your add_grade method.')
+#     print(f"Error message : {e}")
+# else:
+#     print('Congrats ! Your implementation works !')
+
+
+# pour tester
+
+# try:
+#     student = Student("Achille", "Talon")
+#     student.add_grade("History", 10.)
+#     topics = student.followed_topics()
+#     if len(topics) != 1 or "History" not in topics:
+#         raise Exception(f"Expecting ['History'] got {topics}")
+# except Exception as e:
+#     print('OOPS - There is an issue in your followed_topics method')
+#     print(f"Error message : {e}")
+# else:
+#     print('Congrats ! Your implementation works !')
+
+
 # pour tester
 
 try:
     student = Student("Achille", "Talon")
     student.add_grade("History", 10.)
     student.add_grade("History", 12.)
+    if (student.compute_average("History") != 11.):
+        raise Exception("Issue in your average calculation.")
     try:
-        student.add_grade("History", 25.)
+        student.compute_average("French")
     except ValueError:
         pass
     else:
-        raise Exception("a grade outside of [0, 20] should raise ValueError")
+        raise Exception("If topic is not followed, a ValueError is expected")
+    if student.followed_topics() != ["History"]:
+        raise Exception(f"asking for the average of an unfollowed topic must not create it: {student.followed_topics()}")
 except Exception as e:
-    print('OOPS - There is an issue in your add_grade method.')
+    print('OOPS - There is an issue in your compute_average method.')
     print(f"Error message : {e}")
 else:
     print('Congrats ! Your implementation works !')
-     
+
+ 
 # class Student:
     
 #     def __init__(self, first_name, last_name, 
