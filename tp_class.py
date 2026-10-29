@@ -91,33 +91,68 @@
 
 ### la classe STUDENT
 
+# from collections import defaultdict
+
+# class Student:
+#     def __init__(self, first_name: str, last_name: str):
+#         self.nom = last_name
+#         self.prenom = first_name
+#         self.grades = defaultdict
+
+#     def __repr__(self):
+#         return f"{self.prenom} {self.nom}, Grades : {self.grades}"
+
+# pour tester
+
+# try:
+#     student = Student("Achille", "Talon")
+#     r = repr(student)
+#     assert isinstance(r, str), "__repr__ must return a str"
+#     assert "Achille" in r and "Talon" in r, f"first and last name should appear in {r!r}"
+# except Exception as e:
+#     print('OOPS - There is an issue in your code.')
+#     print(f"Error message : {e}")
+# else:
+#     print('Congrats ! Your implementation works !')
+
+
+### gestion des notes
+
 from collections import defaultdict
 
 class Student:
     def __init__(self, first_name: str, last_name: str):
         self.nom = last_name
         self.prenom = first_name
-        self.grades = []
+        self.grades = defaultdict(list)             #le meilleur type pour ranger des notes correspondant à des matières est le dico
 
     def __repr__(self):
-        return f"{self.prenom} {self.nom}, Grades : {self.grades}"
+        return f"{self.prenom} {self.nom}, Grades : {dict(self.grades)}"
+    
+    def add_grade(self, course: str, grade: float): 
+        if not (0 <= grade <= 20): 
+            raise ValueError("La note doit être comprise entre 0 et 20")
+        self.grades[course].append(grade)                  #si course n'existe pas, il le crée dans dico
 
+        
 # pour tester
 
 try:
     student = Student("Achille", "Talon")
-    r = repr(student)
-    assert isinstance(r, str), "__repr__ must return a str"
-    assert "Achille" in r and "Talon" in r, f"first and last name should appear in {r!r}"
+    student.add_grade("History", 10.)
+    student.add_grade("History", 12.)
+    try:
+        student.add_grade("History", 25.)
+    except ValueError:
+        pass
+    else:
+        raise Exception("a grade outside of [0, 20] should raise ValueError")
 except Exception as e:
-    print('OOPS - There is an issue in your code.')
+    print('OOPS - There is an issue in your add_grade method.')
     print(f"Error message : {e}")
 else:
     print('Congrats ! Your implementation works !')
-
-
-### gestiond des notes
-
+     
 # class Student:
     
 #     def __init__(self, first_name, last_name, 
