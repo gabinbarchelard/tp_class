@@ -134,13 +134,56 @@ class Student:
             raise ValueError("La note doit être comprise entre 0 et 20")
         self.grades[course].append(grade)                  #si course n'existe pas, il le crée dans dico
 
-    def followed_topics(self) : 
-        return self.grades.keys()
+    def followed_topics(self):
+        return list(self.grades.keys())
 
-    def compute_average(self, course: str) : 
-        if not(course in self.followed_topics()) : 
-            raise ValueError("Il n'y a aucune note dans cette matière")
-        return (sum(self.grades[course]) / len(self.grades[course]))
+    def compute_average(self, course: str):
+        if course not in self.grades:                       # on teste d'abord avec in, qui ne crée pas la clé
+            raise ValueError(f"{course} is not followed by {self.prenom} {self.nom}")
+        return sum(self.grades[course]) / len(self.grades[course])
+
+    def report(self) :
+        lines = [f"Report for student {self.prenom} {self.nom}",
+            "+===============+===============+",
+            "|     Topic     |    Average    |",
+            "+===============+===============+",]
+        
+        for topic in self.followed_topics():
+            avg = self.compute_average(topic)
+            lines.append(f"|{topic:^15}|{avg:^15.2f}|")             # permet de centrer les données dans les cases
+            lines.append("+---------------+---------------+")           # traits de séparation
+        return "\n".join(lines)
+
+# pour tester
+
+# try:
+#     reference_lines = ['Report for student Albert Einstein',
+#                        '+===============+===============+',
+#                        '|     Topic     |    Average    |',
+#                        '+===============+===============+',
+#                        '|  Mathematics  |     12.80     |',
+#                        '+---------------+---------------+',
+#                        '|  Scubadiving  |     12.50     |',
+#                        '+---------------+---------------+']
+
+#     student = Student("Albert", "Einstein")
+#     student.add_grade("Mathematics", 12.80)
+#     student.add_grade("Scubadiving", 12.50)
+#     report = student.report()
+#     report_lines = report.strip().split('\n')
+#     assert len(report_lines) == len(reference_lines), \
+#         f"expected {len(reference_lines)} lines, got {len(report_lines)}"
+#     for i, (lineref, linestudent) in enumerate(zip(reference_lines, report_lines), start=1):
+#         assert lineref == linestudent, f"Ligne {i} : \n attendu = {lineref}\n  obtenu = {linestudent}"
+# except AssertionError as e:
+#     print("Les deux chaines sont différentes")
+#     print(e)
+# except Exception as e:
+#     print("OOPS - Something's wrong")
+#     print(f"Error message : {e}")
+# else:
+#     print('Congrats ! Your implementation works !')
+
 
         
 # pour tester
@@ -200,20 +243,3 @@ else:
     print('Congrats ! Your implementation works !')
 
  
-# class Student:
-    
-#     def __init__(self, first_name, last_name, 
-#                  birth_year, birth_month, birth_day):
-#         self.first_name = first_name
-#         self.last_name = last_name
-#         self.birth_date = Date(birth_year, birth_month, birth_day)
-        
-#     def __repr__(self):
-#         return f"{self.first_name} {self.last_name}"
-    
-#     def age(self) -> TimeDelta:
-#         # the difference between 2 Dates is a TimeDelta
-#         return Date.today() - self.birth_date
-    
-#     def repr_age(self) -> str:
-#         return timedelta_as_year_month(self.age())
