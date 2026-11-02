@@ -222,24 +222,63 @@ class Student:
 
 # pour tester
 
-try:
-    student = Student("Achille", "Talon")
-    student.add_grade("History", 10.)
-    student.add_grade("History", 12.)
-    if (student.compute_average("History") != 11.):
-        raise Exception("Issue in your average calculation.")
-    try:
-        student.compute_average("French")
-    except ValueError:
-        pass
-    else:
-        raise Exception("If topic is not followed, a ValueError is expected")
-    if student.followed_topics() != ["History"]:
-        raise Exception(f"asking for the average of an unfollowed topic must not create it: {student.followed_topics()}")
-except Exception as e:
-    print('OOPS - There is an issue in your compute_average method.')
-    print(f"Error message : {e}")
-else:
-    print('Congrats ! Your implementation works !')
+# try:
+#     student = Student("Achille", "Talon")
+#     student.add_grade("History", 10.)
+#     student.add_grade("History", 12.)
+#     if (student.compute_average("History") != 11.):
+#         raise Exception("Issue in your average calculation.")
+#     try:
+#         student.compute_average("French")
+#     except ValueError:
+#         pass
+#     else:
+#         raise Exception("If topic is not followed, a ValueError is expected")
+#     if student.followed_topics() != ["History"]:
+#         raise Exception(f"asking for the average of an unfollowed topic must not create it: {student.followed_topics()}")
+# except Exception as e:
+#     print('OOPS - There is an issue in your compute_average method.')
+#     print(f"Error message : {e}")
+# else:
+#     print('Congrats ! Your implementation works !')
 
  
+
+ ### Class ! 
+
+from collections import Counter
+
+class Classe:
+
+    def __init__(self, classname: str):
+        self.classname = classname
+        self.students = {}   
+
+    def add_student(self, student: Student):
+        self.students[(student.prenom, student.nom)] = student            #un élève est un couple prénom,nom
+
+    def __len__(self):
+        return len(self.students)
+
+    def __repr__(self):
+        return f"Class({self.classname}, Students: {list(self.students.values())})"
+
+
+# pour tester
+
+# try:
+#     classe = Classe("P20")
+#     student = Student("Matthieu", "Mazière")
+#     classe.add_student(student)
+#     if len(classe) != 1:
+#         raise Exception('OOPS - There is an issue in your __len__ method.')
+#     r = repr(classe)
+#     if "P20" not in r or "Matthieu" not in r:
+#         raise Exception('OOPS - There is an issue in your __repr__ method.')
+# except Exception as e:
+#     print("OOPS - Something's wrong")
+#     print(f"Error message : {e}")
+# else:
+#     print('Congrats ! Your implementation works !')
+
+    
