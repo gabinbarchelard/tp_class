@@ -244,7 +244,7 @@ class Student:
 
  
 
- ### Class ! 
+ ### Classe ! 
 
 from collections import Counter
 
@@ -263,6 +263,56 @@ class Classe:
     def __repr__(self):
         return f"Class({self.classname}, Students: {list(self.students.values())})"
 
+    def get_student(self, prenom: str, nom: str) : 
+        return self.students.get((prenom, nom))           #merci l'indice ! 
+
+    def load_students_from_file(self, filename: str):
+        with open(filename, 'r', encoding='utf-8') as f:            
+            for line in f:
+                line = line.strip()
+                if not line:          # on ignore les lignes vides
+                    continue
+                prenom, nom = line.split(',')[:2]
+                self.add_student(Student(prenom, nom))
+
+
+# pour tester
+
+import io
+import contextlib
+
+try:
+    classe = Classe("P1920")
+    classe.load_students_from_file('classe-test.csv')           # je ne crois pas avoir accès à ces documents ...
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        classe.load_grades_from_file('grades-test.csv')         #idem 
+    assert "Personne" in buffer.getvalue(), "no warning printed for the unknown student"
+    assert classe.get_student("Albert", "Einstein").compute_average("Physics") == 15.
+    assert classe.get_student("Albert", "Einstein").compute_average("Mathematics") == 13.
+    assert classe.get_student("Enrico", "Fermi").compute_average("Scubadiving") == 9.5
+except Exception as e:
+    print("OOPS - Something's wrong")
+    print(f"Error message : {e}")
+else:
+    print('Congrats ! Your implementation works ! ')
+
+    
+# pour tester
+
+# try:
+#     classe = Classe("P20")
+#     student = Student("Matthieu", "Mazière")
+#     classe.add_student(student)
+#     new_student = classe.get_student("Matthieu", "Mazière")
+#     assert student is new_student
+#     new_student = classe.get_student("Jérôme", "Adnot")
+#     assert new_student is None
+# except Exception as e:
+#     print("OOPS - Something's wrong")
+#     print(f"Error message : {e}")
+# else:
+#     print('Congrats ! Your implementation works !')
 
 # pour tester
 
@@ -280,5 +330,8 @@ class Classe:
 #     print(f"Error message : {e}")
 # else:
 #     print('Congrats ! Your implementation works !')
+
+
+
 
     
